@@ -1,4 +1,4 @@
-# d3-money-vue
+# D3 Money Vue
 
 > A Project to Vue your finances interactively
 
