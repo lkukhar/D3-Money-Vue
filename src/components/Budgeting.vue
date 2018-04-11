@@ -44,7 +44,7 @@
           {name:'Insurance',                 amount:''},
           {name:'Savings',                   amount:''},
           {name:'Entertainment',             amount:''},
-          {name:'Investments',              amount:''}
+          {name:'Investments',               amount:''}
         ]
       }
     }
