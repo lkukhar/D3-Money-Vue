@@ -1,7 +1,9 @@
 <template>
   <div id="app" class="container">
-    <h1 class="text-center">D3 Money Vue</h1>
-    <h2 class="text-center">Visualize Your Finances</h2>
+    <div id="header">
+      <h1>D3 Money Vue</h1>
+      <h2>Visualize Your Finances</h2>
+    </div>
     <Budgeting />
   </div>
 </template>
@@ -15,8 +17,8 @@
   export default {
     name: 'App',
     components: {
-      //Investing
       Budgeting
+      //Investing
     }
   }
 </script>
@@ -28,5 +30,19 @@
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     margin-top: 60px;
+  }
+  body{
+    background-color: #cccccc;
+  }
+  h1, h3{
+    font-weight: bold;
+  }
+  .row{
+    background-color: whitesmoke;
+    padding: 20px;
+    /* /margin-top: 20px; */
+  }
+  th{
+    font-size: 12px;
   }
 </style>
