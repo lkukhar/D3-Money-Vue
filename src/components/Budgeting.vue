@@ -1,36 +1,50 @@
 <template>
-  <div class="row" id="budgeting">
-    <div class="col-md-12">
-      <div class="row">
+  <section>
+    <div class="container">
+      <div class="row" id="budgeting">
         <div class="col-md-12">
-          <h3 class="text-center">Budgeting</h3>
-          <h4 class="text-center">See where your money goes!</h4>
-        </div>
-      </div>
-      <div class="row">
-        <!-- INPUT -->
-        <div class="col-md-4">
-          <span>Enter the amount you spend <em>per month</em> for:</span>
-          <div v-for="item in moneyItems" :key class="money-item-fields">
-            <div>
-              <b>{{item.name}}:</b>
-              <input type="number" step=".01" min="0" v-model.number="item.amount" v-bind:placeholder="item.name"/>
+
+          <!-- SUBHEADER -->
+          <div class="row">
+            <div class="col-md-12">
+              <h3 class="text-center">Budgeting</h3>
+              <h4 class="text-center">See where your money goes!</h4>
             </div>
           </div>
-        </div>
-        <!-- END INPUT -->
+          <!-- END SUB HEADER -->
 
-        <!-- GRAPH -->
-        <div class="col-md-6">
+          <!-- INPUT AND CHART -->
+          <div class="row">
+
+            <!-- INPUT -->
+            <div class="col-md-4">
+              <span>Enter the amount you spend <em>per month</em> for:</span>
+              <div v-for="item in moneyItems" class="money-item-fields">
+                <div>
+                  <b>{{item.name}}:</b>
+                  <input type="number" step=".01" min="0" v-model.number="item.amount" v-bind:placeholder="item.name"/>
+                </div>
+              </div>
+            </div>
+            <!-- END INPUT -->
+
+            <!-- CHART -->
+            <div class="col-md-6" id="budget-chart">
+
+            </div>
+            <!-- END CHART -->
+
+          </div>
+          <!-- END INPUT AND CHART -->
 
         </div>
-        <!-- END GRAPH -->
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
+  import * as d3 from 'd3';
   export default {
     name: 'Budgeting',
     data () {

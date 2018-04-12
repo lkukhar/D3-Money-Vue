@@ -1,9 +1,11 @@
 <template>
-  <div id="app" class="container">
-    <div id="header">
-      <h1>D3 Money Vue</h1>
-      <h2>Visualize Your Finances</h2>
-    </div>
+  <div id="app">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <h1 class="header">D3 Money Vue</h1>
+        <small class="header">Visualize Your Finances</small>
+      </div>
+    </nav>
     <Budgeting />
   </div>
 </template>
@@ -31,18 +33,16 @@
     color: #2c3e50;
     margin-top: 60px;
   }
-  body{
-    background-color: #cccccc;
-  }
   h1, h3{
     font-weight: bold;
   }
-  .row{
-    background-color: whitesmoke;
-    padding: 20px;
-    /* /margin-top: 20px; */
+  .header{
+    color: white;
   }
-  th{
-    font-size: 12px;
+  section{
+    padding: 50px 0;
+  }
+  .row{
+    padding: 20px 0;
   }
 </style>
