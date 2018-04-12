@@ -11,7 +11,7 @@
         <!-- INPUT -->
         <div class="col-md-4">
           <span>Enter the amount you spend <em>per month</em> for:</span>
-          <div v-for="item in moneyItems" class="money-item-fields">
+          <div v-for="item in moneyItems" :key class="money-item-fields">
             <div>
               <b>{{item.name}}:</b>
               <input type="number" step=".01" min="0" v-model.number="item.amount" v-bind:placeholder="item.name"/>
@@ -33,18 +33,18 @@
 <script>
   export default {
     name: 'Budgeting',
-    data(){
+    data () {
       return {
         moneyItems: [
-          {name:'Credit Card',               amount:''},
-          {name:'Utilities',                 amount:''},
-          {name:'Rent',                      amount:''},
-          {name:'Car & Insurance',           amount:''},
-          {name:'Groceries',                 amount:''},
-          {name:'Insurance',                 amount:''},
-          {name:'Savings',                   amount:''},
-          {name:'Entertainment',             amount:''},
-          {name:'Investments',               amount:''}
+          {name: 'Credit Card',     amount: ''},
+          {name: 'Utilities',       amount: ''},
+          {name: 'Rent',            amount: ''},
+          {name: 'Car & Insurance', amount: ''},
+          {name: 'Groceries',       amount: ''},
+          {name: 'Insurance',       amount: ''},
+          {name: 'Savings',         amount: ''},
+          {name: 'Entertainment',   amount: ''},
+          {name: 'Investments',     amount: ''}
         ]
       }
     }
