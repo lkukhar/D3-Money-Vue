@@ -18,11 +18,13 @@
 
             <!-- INPUT -->
             <div class="col-md-4">
-              <span>Enter the amount you spend <em>per month</em> for:</span>
+              <span>Enter the amount you spend <em><b>per month</b></em> for:</span>
               <div v-for="item in moneyItems" class="money-item-fields">
                 <div>
-                  <b>{{item.name}}:</b>
-                  <input type="number" step=".01" min="0" v-model.number="item.amount" v-bind:placeholder="item.name"/>
+                  <b>{{item.label}}:</b>
+                  <div class="money-item-amount float-right">
+                    $<input type="number" step=".01" min="0"  v-model.number="item.count" v-bind:placeholder="item.label"/>
+                  </div>
                 </div>
               </div>
             </div>
@@ -44,34 +46,38 @@
 </template>
 
 <script>
-  import * as d3 from 'd3';
+  const d3 = require('d3');
   export default {
     name: 'Budgeting',
     data () {
       return {
         moneyItems: [
-          {name: 'Credit Card',     amount: ''},
-          {name: 'Utilities',       amount: ''},
-          {name: 'Rent',            amount: ''},
-          {name: 'Car & Insurance', amount: ''},
-          {name: 'Groceries',       amount: ''},
-          {name: 'Insurance',       amount: ''},
-          {name: 'Savings',         amount: ''},
-          {name: 'Entertainment',   amount: ''},
-          {name: 'Investments',     amount: ''}
+          {label: 'Credit Card',     count: 0},
+          {label: 'Utilities',       count: 0},
+          {label: 'Rent',            count: 0},
+          {label: 'Car & Insurance', count: 0},
+          {label: 'Groceries',       count: 0},
+          {label: 'Insurance',       count: 0},
+          {label: 'Savings',         count: 0},
+          {label: 'Entertainment',   count: 0},
+          {label: 'Investments',     count: 0}
         ]
       }
     }
   }
+
 </script>
 
 <style scoped>
   .money-item-fields{
-    /* border-top: 1px solid lightgrey; */
     padding:5px 0px 5px 0px;
   }
+  .money-item-amount{
+    display: inline-block;
+    text-align: right;
+  }
   input{
-    width: 50%;
+    width: 70%;
     float:right;
   }
 </style>
