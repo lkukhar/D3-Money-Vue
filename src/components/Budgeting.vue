@@ -63,16 +63,20 @@
           {label: 'Entertainment',   count: 0},
           {label: 'Investments',     count: 0}
         ]
+
       }
     },
     mounted (){
       const width = 360;
       const height = 360;
+      const donutWidth = 50;
+      const legendRectSize = 18;
+      const legendSpacing = 4;
       var radius = Math.min(width, height) / 2;
 
       var color = d3.scaleOrdinal().range(['#A60F2B', '#648C85', '#B3F2C9',
-                                           '#528C18', '#C3F25C', '#D3435C',
-                                           '#128518', '#5F6318', '#C23448']);
+                                           '#528C18', '#C3F25C', '#FFB732',
+                                           '#128518', '#5F6318', '#B266B2']);
 
       var svg = d3.select('#budget-chart')
                   .append('svg')
@@ -81,7 +85,7 @@
                   .append('g')
                   .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
       var arc = d3.arc()
-                  .innerRadius(0)
+                  .innerRadius(radius - donutWidth)
                   .outerRadius(radius);
       var pie = d3.pie()
                   .value(function(d) { return d.count; })
@@ -94,17 +98,50 @@
                     .attr('fill', function(d, i) {
                        return color(d.data.label);
                     });
+      var legend = svg.selectAll('.legend')
+                .data(color.domain())
+                .enter()
+                .append('g')
+                .attr('class', 'legend')
+                .attr('transform', function(d, i) {
+                  var height = legendRectSize + legendSpacing;
+                  var offset =  height * color.domain().length / 2;
+                  var horz = -2 * legendRectSize;
+                  var vert = i * height - offset;
+                  return 'translate(' + horz + ',' + vert + ')';
+                });
+      var tooltip = d3.select('#chart')
+                      .append('div')
+                      .attr('class', 'tooltip');
+      tooltip.append('div')
+             .attr('class', 'label');
+      tooltip.append('div')
+             .attr('class', 'count');
+      tooltip.append('div')
+             .attr('class', 'percent');
+      legend.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', color)
+            .style('stroke', color);
+      legend.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .text(function(d) { return d; });
     },
     methods: {
       updateChart : function(){
         d3.selectAll("svg").remove();
         const width = 360;
         const height = 360;
+        const donutWidth = 50;
+        const legendRectSize = 18;
+        const legendSpacing = 4;
         var radius = Math.min(width, height) / 2;
 
         var color = d3.scaleOrdinal().range(['#A60F2B', '#648C85', '#B3F2C9',
-                                             '#528C18', '#C3F25C', '#D3435C',
-                                             '#128518', '#5F6318', '#C23448']);
+                                             '#528C18', '#C3F25C', '#FFB732',
+                                             '#128518', '#5F6318', '#B266B2']);
 
         var svg = d3.select('#budget-chart')
                     .append('svg')
@@ -113,7 +150,7 @@
                     .append('g')
                     .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
         var arc = d3.arc()
-                    .innerRadius(0)
+                    .innerRadius(radius - donutWidth)
                     .outerRadius(radius);
         var pie = d3.pie()
                     .value(function(d) { return d.count; })
@@ -126,8 +163,38 @@
                       .attr('fill', function(d, i) {
                          return color(d.data.label);
                       });
+        var legend = svg.selectAll('.legend')
+                        .data(color.domain())
+                        .enter()
+                        .append('g')
+                        .attr('class', 'legend')
+                        .attr('transform', function(d, i) {
+                          var height = legendRectSize + legendSpacing;
+                          var offset =  height * color.domain().length / 2;
+                          var horz = -2 * legendRectSize;
+                          var vert = i * height - offset;
+                          return 'translate(' + horz + ',' + vert + ')';
+                        });
+        var tooltip = d3.select('#chart')
+                        .append('div')
+                        .attr('class', 'tooltip');
+        tooltip.append('div')
+               .attr('class', 'label');
+        tooltip.append('div')
+               .attr('class', 'count');
+        tooltip.append('div')
+               .attr('class', 'percent');
+        legend.append('rect')
+              .attr('width', legendRectSize)
+              .attr('height', legendRectSize)
+              .style('fill', color)
+              .style('stroke', color);
+        legend.append('text')
+              .attr('x', legendRectSize + legendSpacing)
+              .attr('y', legendRectSize - legendSpacing)
+              .text(function(d) { return d; });
       }
-    },
+    }
   }
 
 </script>
@@ -141,8 +208,33 @@
     text-align: right;
     margin-right: 100px;
   }
+  .legend {
+    font-size: 12px;
+  }
+  .tooltip {
+    background: #eee;
+    box-shadow: 0 0 5px #999999;
+    color: #333;
+    display: none;
+    font-size: 12px;
+    left: 130px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 95px;
+    width: 80px;
+    z-index: 10;
+  }
+  rect {
+    stroke-width: 2;
+  }
   input{
     width: 70%;
     float:right;
+  }
+  #budget-chart{
+    height: 360px;
+    width: 360px;
+    position: relative;
   }
 </style>
