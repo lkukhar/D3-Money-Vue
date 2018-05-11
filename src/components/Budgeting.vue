@@ -91,8 +91,6 @@
         const width = 360;
         const height = 360;
         const donutWidth = 50;
-        const legendRectSize = 18;
-        const legendSpacing = 4;
         var radius = Math.min(width, height) / 2;
 
         var color = d3.scaleOrdinal().range(['#A60F2B', '#648C85', '#B3F2C9',
