@@ -65,7 +65,7 @@
     data () {
       return {
         expenseItems: [
-          {label: 'Utilities',       count: 0, color: '#A60F2B'},
+          {label: 'Utilities',       count: 1, color: '#A60F2B'},
           {label: 'Rent',            count: 0, color: '#648C85'},
           {label: 'Car',             count: 0, color: '#B3F2C9'},
           {label: 'Groceries',       count: 0, color: '#528C18'},
@@ -82,6 +82,7 @@
         if (index > -1) {
           this.expenseItems.splice(index, 1);
         }
+        this.createChart(true);
       },
       createChart : function(isUpdate){
         if(isUpdate){
