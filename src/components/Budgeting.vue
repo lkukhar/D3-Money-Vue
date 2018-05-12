@@ -20,21 +20,21 @@
               <div>
                 <span class="instruction">Enter another budget item:</span>
                 <div>
-                  <input type="color" id="color-picker" />
-                  <input name="new-budget-item" id="new-budget-item" class="float-left new-budget" placeholder="New Item"/>
-                  <input name="new-budget-amount" id="new-budget-amount" class="float-left new-budget" placeholder="$ Amount"/>
-                  <button>Add</button>
+                  <input type="color" id="color-picker" v-model="newExpenseItem.color" />
+                  <input name="new-budget-item" id="new-budget-item" class="float-left new-budget" placeholder="New Item" v-model="newExpenseItem.label"/>
+                  <input type="number" step="1" min="0" name="new-budget-amount" id="new-budget-amount" class="float-left new-budget"  placeholder="$ Amount" v-model="newExpenseItem.amount"/>
+                  <button class="btn-success" v-on:click="addBudgetItem()">Add</button>
                 </div>
               </div>
               <div>
                 <span class="instruction">Enter the amount you spend <em><b>per month</b></em> for:</span>
                 <div v-for="item in expenseItems" class="money-item-fields">
                   <div>
-                    <div class="color"></div>
+                    <div class="color" v-bind:style="{'background-color': item.color}"></div>
                     <b>{{item.label}}:</b>
                     <div class="money-item-amount float-right">
-                      <button class="float-right" type="button" name="delete" v-on:click="removeBudgetItem(item)">X</button>
-                      $<input type="number" step="1" min="0" v-on:input="createChart(true)" v-model.number="item.count" v-bind:placeholder="item.label"/>
+                      <button class="float-right btn-danger" type="button" name="delete" v-on:click="removeBudgetItem(item)">X</button>
+                      $<input type="number" step="1" min="0" v-on:input="createChart(true)" v-model.number="item.amount" v-bind:placeholder="item.label"/>
                     </div>
                   </div>
                 </div>
@@ -64,12 +64,13 @@
     name: 'Budgeting',
     data () {
       return {
+        newExpenseItem: {label: '', amount: '', color: '#000000'},
         expenseItems: [
-          {label: 'Utilities',       count: 1, color: '#A60F2B'},
-          {label: 'Rent',            count: 0, color: '#648C85'},
-          {label: 'Car',             count: 0, color: '#B3F2C9'},
-          {label: 'Groceries',       count: 0, color: '#528C18'},
-          {label: 'Entertainment',   count: 0, color: '#C3F25C'}
+          {label: 'Utilities',       amount: 1, color: '#A60F2B'},
+          {label: 'Rent',            amount: 0, color: '#648C85'},
+          {label: 'Car',             amount: 0, color: '#B3F2C9'},
+          {label: 'Groceries',       amount: 0, color: '#528C18'},
+          {label: 'Entertainment',   amount: 0, color: '#C3F25C'}
         ]
       }
     },
@@ -77,6 +78,18 @@
       this.createChart(false); //Create original chart, without removal of anything
     },
     methods: {
+      isValidNewExpenseItem: function(newExpenseItem){
+        return /\S/.test(newExpenseItem.label) //Check that it has atlease one letter in it
+               && newExpenseItem.amount != null
+               && /\S/.test(newExpenseItem.color)
+      },
+      addBudgetItem: function(){
+        if(this.isValidNewExpenseItem(this.newExpenseItem)){
+          this.expenseItems.push(this.newExpenseItem);
+          this.newExpenseItem = {label: '', count: '', color: '#000000'};
+        }
+        this.createChart(true);
+      },
       removeBudgetItem: function(item){
         var index = this.expenseItems.indexOf(item);
         if (index > -1) {
@@ -90,11 +103,10 @@
         }
         const width = 360;
         const height = 360;
-        const donutWidth = 50;
         var radius = Math.min(width, height) / 2;
+        var colors = this.expenseItems.map(x => x.color);
 
-        var color = d3.scaleOrdinal().range(['#A60F2B', '#648C85', '#B3F2C9',
-                                             '#528C18', '#C3F25C']);
+        var color = d3.scaleOrdinal().range(colors);
 
         var svg = d3.select('#budget-chart')
                     .append('svg')
@@ -103,20 +115,19 @@
                     .append('g')
                     .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
         var arc = d3.arc()
-                    .innerRadius(radius - donutWidth)
+                    .innerRadius(0)
                     .outerRadius(radius);
         var pie = d3.pie()
-                    .value(function(d) { return d.count; })
+                    .value(function(d) { return d.amount; })
                     .sort(null);
-        var path = svg.selectAll('path')
-                      .data(pie(this.expenseItems))
-                      .enter()
-                      .append('path')
-                      .attr('d', arc)
-                      .attr('fill', function(d, i) {
-                         return color(d.data.label);
-                      });
-
+       var path = svg.selectAll('path')
+                     .data(pie(this.expenseItems))
+                     .enter()
+                     .append('path')
+                     .attr('d', arc)
+                     .attr('fill', function(d, i) {
+                        return color(d.data.label);
+                     });
       }
     }
   }
@@ -162,8 +173,21 @@
     display:inline-block;
     width:15px;
     height:15px;
-    background-color: black;
     margin-left:5px;
+  }
+  .tooltip {
+    background: #eee;
+    box-shadow: 0 0 5px #999999;
+    color: #333;
+    display: none;
+    font-size: 12px;
+    left: 130px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 95px;
+    width: 80px;
+    z-index: 10;
   }
   #budget-chart{
     height: 360px;
